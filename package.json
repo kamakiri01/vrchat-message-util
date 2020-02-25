@@ -1,0 +1,20 @@
+{
+  "name": "vrchat-message-util",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc -p ./",
+    "start": "node lib/index.js run",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/prompts": "^2.0.3",
+    "@types/request": "^2.48.4",
+    "prompts": "^2.3.1",
+    "request": "^2.88.2",
+    "typescript": "^3.7.5"
+  }
+}
