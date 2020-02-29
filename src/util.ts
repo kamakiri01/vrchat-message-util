@@ -30,3 +30,10 @@ export function getSameWorldFriends(authToken: string, myUserId: string): Promis
         return sameInstanceFriends;
     });
 }
+
+export function friendRequest(authToken: string, targetUserId: string) {
+    api.postFriendRequest({
+            authToken: authToken,
+            targetUserId: targetUserId
+    });
+}

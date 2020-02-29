@@ -44,12 +44,18 @@ function init() {
                 } else {
                     resolve();
                 }
-            })
+            });
+            console.log("authorization has succeeded.")
+        })
+        .then(() => {
+            util.friendRequest(config.authToken, config.userId);
+            console.log("sent friend request to you from yourself. accept it in vrchat web or app.");
         })
         .then(() => {
             console.log([
+                "",
                 "init completed.",
-                "generate config.json in current directory",
+                "generated config.json in current directory.",
                 "don't publish this file. it has secret information. take care."
             ].join("\n"));
         })
@@ -112,20 +118,6 @@ function help() {
         "  help: you look now"
     ].join("\n"));
 }
-
-/*
-function friendRequest(targetUserId: string) {
-    util.init().then((result: util.VerifyResultInterface) => {
-        util.postFriendRequest({
-            authToken: result.authToken,
-            targetUserId: targetUserId
-        });
-        console.log("send f done");
-    }).catch((error) => {
-        console.log("error", error);
-    })
-}
-*/
 
 export function run(argv: string[]) {
     switch(argv[2]) {
