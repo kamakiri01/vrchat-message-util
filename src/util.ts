@@ -26,8 +26,17 @@ export function getSameWorldFriends(authToken: string, myUserId: string): Promis
         const myInfo = Array.from(friendArray).filter((friend) => friend.id === myUserId);
         const myInstanceLocation = myInfo[0].location;
         const sameInstanceFriends = Array.from(friendArray).filter((friend) => friend.location === myInstanceLocation);
-        console.log("sameInstanceFriends", sameInstanceFriends);
         return sameInstanceFriends;
+    });
+}
+
+export function getOnlineFriends(authToken: string, myUserId: string): Promise<type.FriendResult[]> {
+    return api.getFriends({
+        authToken: authToken,
+        offline: false
+    }).then((friends: type.FriendResult[]) => {
+        const friendArray: type.FriendResult[] = JSON.parse(friends as any);
+        return friendArray;
     });
 }
 

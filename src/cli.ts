@@ -71,20 +71,38 @@ function send() {
     util.readConfig(configJsonPath)
         .then((configResult: type.ConfigrationInterface) => {
             if (!configResult.userId || !configResult.authToken) {
-                console.log("ENOENT config.json, generate your token and config file with init command.");
-                return process.exit(1);
+                throw new Error("ENOENT config.json, generate your token and config file with init command.");
             }
             config = configResult;
         })
-        .then(() => {
-            return util.getSameWorldFriends(config.authToken, config.userId);
+        .then(async () => {
+            const question: prompts.PromptObject = {
+                type: "select",
+                name: "target",
+                message: "is send target in same world?",
+                choices: [
+                    {title: "in same world", value: "same"}, {title: "in other world", value: "all"}
+                ]
+            };
+            const result = await prompts(question);
+            if (result.target === "same") {
+                return util.getSameWorldFriends(config.authToken, config.userId);
+            } else {
+                return util.getOnlineFriends(config.authToken, config.userId);
+            }
         })
-        .then(async (sameInstanceFriends: type.FriendResult[]) => {
+        .then(async (friends: type.FriendResult[]) => {
             const question: prompts.PromptObject = {
                 type: "select",
                 name: "id",
                 message: "Who send to?",
-                choices: sameInstanceFriends.map(friend => {
+                choices: friends.sort((a, b) => {
+                    if (a.displayName.toLocaleLowerCase() > b.displayName.toLocaleLowerCase()) {
+                        return 1;
+                    } else {
+                        return -1;
+                    }
+                }).map(friend => {
                     return {title: friend.displayName, value: friend.id};
                 })
             };
@@ -92,13 +110,14 @@ function send() {
             return result.id;
         })
         .then(async (targetUserId: string) => {
+            if (!targetUserId) throw new Error("target user id is not provided.");
             const question: prompts.PromptObject = {
                 type: "text",
                 name: "paragraph",
                 message: "What message?"
             };
             const result = await prompts(question);
-
+            if (!result.paragraph) throw new Error("message is not provided.")
             return api.postNotification({
                 targetUserId: targetUserId,
                 authToken: config.authToken,
@@ -107,6 +126,10 @@ function send() {
         })
         .then(() => {
             console.log("send completed.")
+        })
+        .catch((error) => {
+            console.log("error: " + error.message);
+            process.exit(1);
         })
 }
 
@@ -132,5 +155,3 @@ export function run(argv: string[]) {
         help();
     }
 }
-
-run(process.argv);
