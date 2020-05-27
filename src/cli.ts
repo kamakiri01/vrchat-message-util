@@ -133,6 +133,31 @@ function send() {
         })
 }
 
+function dump() {
+    const configJsonPath: string = path.resolve(__dirname, "..", "config.json");
+    let config: type.ConfigrationInterface;
+    util.readConfig(configJsonPath)
+        .then((configResult: type.ConfigrationInterface) => {
+            if (!configResult.userId || !configResult.authToken) {
+                throw new Error("ENOENT config.json, generate your token and config file with init command.");
+            }
+            config = configResult;
+        })
+        .then(async () => {
+            return util.getSameWorldFriends(config.authToken, config.userId);
+
+        })
+        .then(async (friends: type.FriendResult[]) => {
+            console.log(friends.map(friend => {
+                return {
+                    id: friend.id,
+                    username: friend.username,
+                    displayName: friend.displayName
+                };
+            }));
+        })
+}
+
 function help() {
     console.log([
         "command:",
@@ -149,6 +174,9 @@ export function run(argv: string[]) {
         break;
     case "send":
         send();
+        break;
+    case "dump":
+        dump();
         break;
     case "help":
     default:
