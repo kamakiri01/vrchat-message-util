@@ -167,19 +167,35 @@ function help() {
     ].join("\n"));
 }
 
+function noCommand() {
+    Promise.resolve()
+        .then(async () => {
+
+            const question: prompts.PromptObject = {
+                type: "select",
+                name: "target",
+                message: "select command:",
+                choices: Object.keys(commands).map(commandName => {
+                    return {title: commandName, value: commandName};
+                })
+            };
+            const result = await prompts(question);
+            commands[result.target]();
+        })
+}
+
+const commands: {[key: string]: () => void} = {
+    init,
+    send,
+    dump,
+    help
+};
+
 export function run(argv: string[]) {
-    switch(argv[2]) {
-    case "init":
-        init();
-        break;
-    case "send":
-        send();
-        break;
-    case "dump":
-        dump();
-        break;
-    case "help":
-    default:
-        help();
+    const commandName = argv[2];
+    if (!!commands[commandName]) {
+        commands[commandName]();
+    } else {
+        noCommand();
     }
 }
