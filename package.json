@@ -6,8 +6,8 @@
   "scripts": {
     "build": "tsc -p ./"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "kamakiri01",
+  "license": "MIT",
   "private": true,
   "dependencies": {
     "@types/prompts": "^2.0.3",

@@ -1,4 +1,4 @@
-# DEPRECATED
+# ⛔️DEPRECATED
 
 The VRChat API has probably changed. This unofficial tool is deprecated. thx.
 
