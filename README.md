@@ -1,6 +1,6 @@
 # DEPRECATED
 
-VRChat API may changed. This unofficial tool is deprecated. thx.
+The VRChat API has probably changed. This unofficial tool is deprecated. thx.
 
 # VRChat Message Util
 
