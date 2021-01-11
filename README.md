@@ -1,3 +1,7 @@
+# DEPRECATED
+
+VRChat API may changed. This unofficial tool is deprecated. thx.
+
 # VRChat Message Util
 
 VRChat の notification API を利用して、通知を送信可能な相手に任意の文字列を通知するツールです。
